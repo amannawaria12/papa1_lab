@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const { ObjectId } = require('mongodb')
-const port = (process.env.PORT || 3000)
+const port = (process.env.PORT || 5500)
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://amannawaria12:OkWsm1yvYP4wgZRG@cluster0.tdtkr9c.mongodb.net/?retryWrites=true&w=majority";
 
