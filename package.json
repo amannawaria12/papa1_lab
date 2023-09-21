@@ -6,7 +6,7 @@
     "mongodb": "^6.1.0",
     "nodemon": "^3.0.1"
   },
-  "name": "cuddly-palm-not-tree-papa",
+  "name": "papa1_lab",
   "description": "aman",
   "version": "1.0.0",
   "main": "app.js",
