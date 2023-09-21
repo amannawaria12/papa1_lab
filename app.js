@@ -1,13 +1,17 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const { ObjectId } = require('mongodb')
 const port = (process.env.PORT || 3000)
-
-
-
-
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://amannawaria12:i7ArOtzognEYkQJY@cluster0.tdtkr9c.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://amannawaria12:OkWsm1yvYP4wgZRG@cluster0.tdtkr9c.mongodb.net/?retryWrites=true&w=majority";
+
+
+
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -30,16 +34,42 @@ async function run() {
     await client.close();
   }
 }
-run().catch(console.dir);
+//run().catch(console.dir);
+
+async function cxnDB(){
+
+  try{
+    client.connect; 
+    const collection = client.db("papa1_lab_database.dev-profile").collection("dev-profiles");
+    // const collection = client.db("papa").collection("dev-profiles");
+    const result = await collection.find().toArray();
+    //const result = await collection.findOne(); 
+    console.log("cxnDB result: ", result);
+    return result; 
+  }
+  catch(e){
+      console.log(e)
+  }
+  finally{
+    client.close; 
+  }
+}
 
 
-app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.get('/', async (req, res) => {
+
+  let result = await cxnDB().catch(console.error); 
+
+  // console.log("get/: ", result);
+
+  res.send("here for a second: " + result[0].name)
+  //res.render('index', {  peopleData : result })
+})
 
 
 let myVariableServer = 'soft coded server data';
 
-app.get('/aman', async function (req, res) {
+app.get('/aman', function (req, res) {
   res.render('index', 
   {
     'myVariableClient' : myVariableServer 
@@ -63,16 +93,16 @@ app.post('/postClientData', function (req, res) {
 })
 
 
-app.get('/', function (req, res) {
-  res.send('<h1>Hello World From Express</h1>')
-})
+// app.get('/', function (req, res) {
+//   res.send('<h1>Hello World From Express & a PaaS/Render</h1>')
+// })
 
-app.get('/whatever', function (req, res) {
-  res.sendFile(__dirname + '/index.html');
-})
+// app.get('/whatever', function (req, res) {
+//   res.sendFile(__dirname + '/index.html');
+// })
 
 
 
 // app.listen(3000)
 
-app.listen(port, () => console.log(`Server is on:  ${ port }` ));
+app.listen(port, () => console.log(`Server is running...on ${ port }` ));
